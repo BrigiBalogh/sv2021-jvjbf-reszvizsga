@@ -2,7 +2,10 @@ package cinema;
 
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -39,8 +42,8 @@ public class MovieService {
                         .filter(m -> m.getId() == id).findAny()
                         .orElseThrow(() -> new IllegalArgumentException("Movie not found: " + id)),
                 MovieDTO.class);
-
     }
+
 
     public MovieDTO createNewReservation(CreateReservationCommand command) {
         Movie movie = new Movie(idGenerator.incrementAndGet(), command.getTitle(), command.getDate(),

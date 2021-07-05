@@ -29,9 +29,15 @@ public class MovieController {
         return service.getMovies(title);
     }
 
+
     @GetMapping("/{id}")
-    public MovieDTO findMovieById(@PathVariable("id") long id) {
-        return service.findMovieById(id);
+    public ResponseEntity findMovieById(@PathVariable("id") long id) {
+        try{
+            return ResponseEntity.ok(service.findMovieById(id));
+
+        }catch (IllegalArgumentException iae) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping
