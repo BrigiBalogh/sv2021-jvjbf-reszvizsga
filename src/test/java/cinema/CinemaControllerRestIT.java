@@ -12,7 +12,6 @@ import org.zalando.problem.Problem;
 import org.zalando.problem.Status;
 
 import java.net.URI;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -37,7 +36,7 @@ public class CinemaControllerRestIT {
 
         MovieDTO result =
                 template.postForObject("/api/cinema",
-                        new CreateMovieCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
+                        new CreateReservationCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
                         MovieDTO.class);
 
 
@@ -52,11 +51,11 @@ public class CinemaControllerRestIT {
     void testGetMovies() {
 
         template.postForObject("/api/cinema",
-                new CreateMovieCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
+                new CreateReservationCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
                 MovieDTO.class);
 
         template.postForObject("/api/cinema",
-                new CreateMovieCommand("Batman", LocalDateTime.of(2021, 6, 29, 20, 30), 120),
+                new CreateReservationCommand("Batman", LocalDateTime.of(2021, 6, 29, 20, 30), 120),
                 MovieDTO.class);
 
 
@@ -77,11 +76,11 @@ public class CinemaControllerRestIT {
     void testGetMoviesByTitle() {
 
         template.postForObject("/api/cinema",
-                new CreateMovieCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
+                new CreateReservationCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
                 MovieDTO.class);
 
         template.postForObject("/api/cinema",
-                new CreateMovieCommand("Batman", LocalDateTime.of(2021, 6, 29, 20, 30), 120),
+                new CreateReservationCommand("Batman", LocalDateTime.of(2021, 6, 29, 20, 30), 120),
                 MovieDTO.class);
 
 
@@ -102,7 +101,7 @@ public class CinemaControllerRestIT {
     @Test
     void testCreateNewReservation() {
         template.postForObject("/api/cinema",
-                new CreateMovieCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
+                new CreateReservationCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
                 MovieDTO.class);
 
         MovieDTO result = template.postForObject("/api/cinema/1/reserve", new CreateReservationCommand(5), MovieDTO.class);
@@ -116,7 +115,7 @@ public class CinemaControllerRestIT {
     @Test
     void updateMovie() {
         template.postForObject("/api/cinema",
-                new CreateMovieCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
+                new CreateReservationCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
                 MovieDTO.class);
 
         template.put("/api/cinema/1", new UpdateDateCommand(LocalDateTime.of(2021, 7, 1, 12, 30)));
@@ -136,7 +135,7 @@ public class CinemaControllerRestIT {
     @Test
     void createMovieWithInvalidName() {
         Problem result = template.postForObject("/api/cinema",
-                new CreateMovieCommand("", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
+                new CreateReservationCommand("", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
                 Problem.class);
 
 
@@ -148,7 +147,7 @@ public class CinemaControllerRestIT {
     @Test
     void createMovieWithInvalidMax() {
         Problem result = template.postForObject("/api/cinema",
-                new CreateMovieCommand("", LocalDateTime.of(2021, 6, 30, 12, 30), 15),
+                new CreateReservationCommand("", LocalDateTime.of(2021, 6, 30, 12, 30), 15),
                 Problem.class);
 
 
@@ -168,7 +167,7 @@ public class CinemaControllerRestIT {
     @Test
     void updateWithInvalidNumberOfSeats(){
         template.postForObject("/api/cinema",
-                new CreateMovieCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
+                new CreateReservationCommand("Titanic", LocalDateTime.of(2021, 6, 30, 12, 30), 120),
                 MovieDTO.class);
 
         Problem result = template.postForObject("/api/cinema/1/reserve", new CreateReservationCommand(121), Problem.class);
