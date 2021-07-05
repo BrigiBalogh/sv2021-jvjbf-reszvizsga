@@ -13,8 +13,10 @@ public class Movie {
     private Long id;
     private String title;
     private LocalDateTime date;
-    private int maxSeats;
+    private int maxReservation;
     private int freeSpaces;
+
+
 
     public void reserve(int seats) {
         if (freeSpaces >= seats) {

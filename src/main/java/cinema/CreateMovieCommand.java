@@ -7,11 +7,11 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
-public class CreateReservationCommand {
+@NoArgsConstructor
+public class CreateMovieCommand {
+
 
     @NotBlank(message = " title cannot be empty")
     private String title;
@@ -20,6 +20,4 @@ public class CreateReservationCommand {
 
     @Min(value = 20, message = "Minimum seats  have  20")
     private int maxReservation;
-
-
 }

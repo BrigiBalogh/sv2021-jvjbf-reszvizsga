@@ -6,6 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -44,10 +45,9 @@ public class MovieService {
                 MovieDTO.class);
     }
 
-
-    public MovieDTO createNewReservation(CreateReservationCommand command) {
+    public MovieDTO createMovie( CreateReservationCommand command) {
         Movie movie = new Movie(idGenerator.incrementAndGet(), command.getTitle(), command.getDate(),
-                command.getMaxSeats(), command.getMaxSeats());
+                command.getMaxReservation(), command.getMaxReservation());
         movies.add(movie);
         return modelMapper.map(movie, MovieDTO.class);
 
@@ -56,9 +56,13 @@ public class MovieService {
     public void reserve(int id, int seats) {
         Movie movie = movies.stream()
                 .filter(m -> m.getId() == id).findAny()
-                .orElseThrow(() -> new IllegalArgumentException("Movie not found: " + id));
+                .orElseThrow(() -> new IllegalStateException("Movie not found: " + id));
         movie.reserve(seats);
     }
+
+
+
+
 
     public MovieDTO updateMovie (long id, UpdateDateCommand command) {
         Movie movie = movies.stream()
@@ -68,10 +72,16 @@ public class MovieService {
         return modelMapper.map(movie, MovieDTO.class);
     }
 
+
+    public void deleteAllMovies() {
+        movies.clear();
+        idGenerator = new AtomicLong();
+    }
+
     public void deleteMovies(long id) {
        Movie movie = movies.stream()
                 .filter(m -> m.getId() == id)
-                .findFirst().orElseThrow(() -> new IllegalArgumentException("Employee not found: " + id));
+                .findFirst().orElseThrow(() -> new IllegalArgumentException("Movie not found: " + id));
         movies.remove(movie);
     }
 }
